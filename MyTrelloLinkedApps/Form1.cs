@@ -342,7 +342,12 @@ namespace MyTrelloLinkedApps
                 next = null;
             }
         }
-        
+        public class Node2
+        {
+            public object element; // Dữ liệu lưu trữ (Card hoặc CardList)
+            public Node2 flink;// Con trỏ tới nút tiếp theo
+            public Node2 blink;// Con trỏ tới nút trước đó
+        }
 
         private Node head; // Nút đầu tiên của danh sách
         private int count; // Số lượng phần tử trong danh sách
