@@ -342,6 +342,7 @@ namespace MyTrelloLinkedApps
                 next = null;
             }
         }
+        
 
         private Node head; // Nút đầu tiên của danh sách
         private int count; // Số lượng phần tử trong danh sách
