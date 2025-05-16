@@ -41,24 +41,36 @@ namespace MyTrelloLinkedApps
             btnRemoveList.BackColor = Color.LightCoral;
             btnRemoveList.FlatStyle = FlatStyle.Flat;
 
-            btnAddCard.BackColor = Color.LightSkyBlue;
+            btnAddCard.BackColor = Color.LightBlue;
             btnAddCard.FlatStyle = FlatStyle.Flat;
 
-            btnRemoveCard.BackColor = Color.LightCoral;
+            btnRemoveCard.BackColor = Color.LightBlue;
             btnRemoveCard.FlatStyle = FlatStyle.Flat;
 
-            btnEditCard.BackColor = Color.LightSalmon;
+            btnEditCard.BackColor = Color.LightBlue;
             btnEditCard.FlatStyle = FlatStyle.Flat;
 
-            btnArchiveCard.BackColor = Color.LightGray;
+            btnArchiveCard.BackColor = Color.LightBlue;
             btnArchiveCard.FlatStyle = FlatStyle.Flat;
 
-            btnMoveCard.BackColor = Color.Khaki;
+            btnMoveCard.BackColor = Color.LightBlue;
             btnMoveCard.FlatStyle = FlatStyle.Flat;
 
-            btnChangeCardColor.BackColor = Color.Plum;
+            btnChangeCardColor.BackColor = Color.LightBlue;
             btnChangeCardColor.FlatStyle = FlatStyle.Flat;
 
+
+            btnShowArchivedCards.BackColor = Color.LightBlue;
+            btnShowArchivedCards.FlatStyle = FlatStyle.Flat;
+
+            btnMoveCardUp.BackColor = Color.LightGreen;
+            btnMoveCardUp.FlatStyle = FlatStyle.Flat;
+
+            btnMoveCardDown.BackColor = Color.LightCoral;
+            btnMoveCardDown.FlatStyle = FlatStyle.Flat;
+
+            this.BackColor = Color.LightGray;
+            
             // Đăng ký các sự kiện click cho các nút
             btnAddList.Click += btnAddList_Click;
             btnRemoveList.Click += btnRemoveList_Click;
