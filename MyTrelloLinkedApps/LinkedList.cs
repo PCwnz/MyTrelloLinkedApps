@@ -96,82 +96,20 @@ namespace MyTrelloLinkedApps
                 current = current.next;
             return current?.element;
         }
-        public Node FindPre(object element)//Tìm kiếm node trước node đầu vào
+               
+        // Hàm hoán đổi hai thẻ trong LinkedList theo index
+        private void SwapCards(LinkedList cards, int idx1, int idx2)
         {
-            Node current = head;
-            while (current.next != null && !current.next.element.ToString().Equals(element.ToString()))
+            if (cards == null) return;
+            var node1 = cards.Head;
+            var node2 = cards.Head;
+            for (int i = 0; i < idx1 && node1 != null; i++) node1 = node1.next;
+            for (int i = 0; i < idx2 && node2 != null; i++) node2 = node2.next;
+            if (node1 != null && node2 != null)
             {
-                current = current.next;
+                var temp = node1.element;
+                node1.element = node2.element;
+                node2.element = temp;
             }
-            if (current.next == null)
-                return null; // Case: Không tìm thấy
-            return current;
         }
-        public void SwapNodes(Node nodeA, Node nodeB)
-        {
-            if (nodeA == null || nodeB == null || nodeA == nodeB) return;
-            // Lưu trữ các nút trước và sau của nodeA và nodeB
-
-            nodeA = Find(nodeA.element);
-            nodeB = Find(nodeB.element);
-
-            Node prevA = FindPre(nodeA.element);
-            Node prevB = FindPre(nodeB.element);
-            //NodeA đứng trước NodeB
-            if (nodeA.next == nodeB)
-            {
-                if (prevA != null)
-                    prevA.next = nodeB;
-                else
-                    head = nodeB;
-
-                nodeA.next = nodeB.next;
-                nodeB.next = nodeA;
-                return;
-            }
-            //NodeB đứng trước NodeA
-            else if (nodeB.next == nodeA)
-            {
-                if (prevB != null)
-                    prevB.next = nodeA;
-                else
-                    head = nodeA;
-
-                nodeB.next = nodeA.next;
-                nodeA.next = nodeB;
-                return;
-            }
-            //Case : 2 node không liền kề nhau
-            if (prevA != null) prevA.next = nodeB;
-            else head = nodeB;
-
-            if (prevB != null) prevB.next = nodeA;
-            else head = nodeA;
-
-            // Hoán đổi next
-            Node temp = nodeA.next;
-            nodeA.next = nodeB.next;
-            nodeB.next = temp;
-        }
-        public void BubbleSortASC()//Bubble Sort theo thứ tự tăng dần
-        {
-            if (head == null || head.next == null)
-                return;
-
-            bool swapped;
-            do
-            {
-                swapped = false;
-                Node current = head;
-                while (current.next != null)
-                {
-                    if (string.Compare(current.element.ToString(), current.next.element.ToString()) > 0)
-                    {
-                        SwapNodes(current, current.next);
-                    }
-                    current = current.next;
-                }
-            } while (swapped);
-        }
-    }
 }
