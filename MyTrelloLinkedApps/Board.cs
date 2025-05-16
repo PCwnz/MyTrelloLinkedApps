@@ -12,10 +12,12 @@ namespace MyTrelloLinkedApps
     {
         public LinkedList Lists { get; } = new LinkedList(); // Danh sách các list trên board
     }
+    
     // Lớp CardList: đại diện cho một danh sách (List) chứa các thẻ (Card)
+    
     public class CardList
     {
-        public string Name { get; set; }              // Tên danh sách
+        public string Name { get; set; }                     // Tên danh sách
         public LinkedList Cards { get; } = new LinkedList(); // Danh sách các thẻ trong list
 
         public CardList(string name)
@@ -30,6 +32,7 @@ namespace MyTrelloLinkedApps
     }
 
     // Lớp Card: đại diện cho một thẻ trong danh sách
+    
     public class Card
     {
         public string Title { get; set; }        // Tiêu đề thẻ
@@ -50,5 +53,4 @@ namespace MyTrelloLinkedApps
             return Title;
         }
     }
-
 }
