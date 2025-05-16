@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
@@ -11,10 +11,53 @@ namespace MyTrelloLinkedApps
         // Biến board lưu trữ toàn bộ các danh sách (List) trên bảng Trello
         private Board board = new Board();
 
+        // khai báo Label tiêu đề
+        private Label lblTitle;
+
         // Hàm khởi tạo form, đăng ký các sự kiện cho các nút và listbox
         public Form1()
         {
             InitializeComponent();
+
+            // Tiêu đề chính
+            lblTitle = new Label();
+            lblTitle.Text = "QUẢN LÝ BẢN TIN TRELLO";
+            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.Red;
+            lblTitle.AutoSize = true;
+            this.Controls.Add(lblTitle);
+
+            // Gán vị trí sau khi thêm
+            lblTitle.Location = new Point(10, 10); // Đặt trên cùng
+
+            lblLists.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblCards.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+
+
+            //Tạo màu cho các nút
+            btnAddList.BackColor = Color.LightGreen;
+            btnAddList.FlatStyle = FlatStyle.Flat;
+
+            btnRemoveList.BackColor = Color.LightCoral;
+            btnRemoveList.FlatStyle = FlatStyle.Flat;
+
+            btnAddCard.BackColor = Color.LightSkyBlue;
+            btnAddCard.FlatStyle = FlatStyle.Flat;
+
+            btnRemoveCard.BackColor = Color.LightCoral;
+            btnRemoveCard.FlatStyle = FlatStyle.Flat;
+
+            btnEditCard.BackColor = Color.LightSalmon;
+            btnEditCard.FlatStyle = FlatStyle.Flat;
+
+            btnArchiveCard.BackColor = Color.LightGray;
+            btnArchiveCard.FlatStyle = FlatStyle.Flat;
+
+            btnMoveCard.BackColor = Color.Khaki;
+            btnMoveCard.FlatStyle = FlatStyle.Flat;
+
+            btnChangeCardColor.BackColor = Color.Plum;
+            btnChangeCardColor.FlatStyle = FlatStyle.Flat;
 
             // Đăng ký các sự kiện click cho các nút
             btnAddList.Click += btnAddList_Click;
@@ -25,6 +68,15 @@ namespace MyTrelloLinkedApps
             btnEditCard.Click += btnEditCard_Click;
             btnMoveCard.Click += btnMoveCard_Click;
             lstLists.SelectedIndexChanged += lstLists_SelectedIndexChanged;
+            // Đăng ký sự kiện cho nút đổi màu thẻ
+            btnChangeCardColor.Click += btnChangeCardColor_Click;
+
+            // Đăng ký sự kiện cho nút xem thẻ đã lưu trữ
+            btnShowArchivedCards.Click += btnShowArchivedCards_Click;
+
+            // Đăng ký sự kiện cho nút di chuyển thẻ lên
+            btnMoveCardUp.Click += btnMoveCardUp_Click;
+            btnMoveCardDown.Click += btnMoveCardDown_Click;
 
             // Khởi tạo dữ liệu mẫu ban đầu cho ứng dụng
             KhoiTaoDuLieuMau();
@@ -82,8 +134,37 @@ namespace MyTrelloLinkedApps
                 if (card != null && !card.IsArchived)
                 {
                     lstCards.Items.Add(card.Title);
+                    // Nếu card có màu (Color khác Color.Empty), chuyển ListBox sang chế độ OwnerDraw để tự vẽ màu nền
+                    if (card.Color != Color.Empty)
+                    {
+                        // Đảm bảo chỉ đăng ký sự kiện vẽ một lần
+                        lstCards.DrawMode = DrawMode.OwnerDrawFixed;
+                        lstCards.DrawItem -= lstCards_DrawItem;
+                        lstCards.DrawItem += lstCards_DrawItem;
+                    }
                 }
             }
+        }
+
+        // Hàm vẽ lại từng item trong ListBox lstCards để đổi màu nền theo màu của thẻ
+        // Sự kiện này chỉ được kích hoạt khi ListBox ở chế độ OwnerDrawFixed
+        private void lstCards_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index < 0) return;
+            var list = board.Lists.GetAt(lstLists.SelectedIndex) as CardList;
+            if (list == null) return;
+            var card = list.Cards.GetAt(e.Index) as Card;
+            // Nếu card có màu, dùng màu đó làm nền, ngược lại dùng màu mặc định
+            Color backColor = (card != null && card.Color != Color.Empty) ? card.Color : e.BackColor;
+            using (SolidBrush brush = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(brush, e.Bounds);
+            }
+            using (SolidBrush textBrush = new SolidBrush(e.ForeColor))
+            {
+                e.Graphics.DrawString(lstCards.Items[e.Index].ToString(), e.Font, textBrush, e.Bounds);
+            }
+            e.DrawFocusRectangle();
         }
 
         // Sự kiện click nút Thêm danh sách
@@ -319,11 +400,121 @@ namespace MyTrelloLinkedApps
                 }
             }
         }
+        
+        // Thêm hàm xử lý sự kiện di chuyển thẻ lên
+        private void btnMoveCardUp_Click(object sender, EventArgs e)
+        {
+            if (lstLists.SelectedIndex == -1 || lstCards.SelectedIndex <= 0)
+                return;
+            var list = board.Lists.GetAt(lstLists.SelectedIndex) as CardList;
+            if (list == null) return;
+            int idx = lstCards.SelectedIndex;
+            if (idx <= 0) return;
+            // Hoán đổi vị trí hai thẻ trong LinkedList
+            SwapCards(list.Cards, idx, idx - 1);
+            CapNhatThe();
+            lstCards.SelectedIndex = idx - 1;
+        }
+        
+        // Thêm hàm xử lý sự kiện di chuyển thẻ xuống
+        private void btnMoveCardDown_Click(object sender, EventArgs e)
+        {
+            if (lstLists.SelectedIndex == -1 || lstCards.SelectedIndex == -1)
+                return;
+            var list = board.Lists.GetAt(lstLists.SelectedIndex) as CardList;
+            if (list == null) return;
+            int idx = lstCards.SelectedIndex;
+            if (idx >= lstCards.Items.Count - 1) return;
+            // Hoán đổi vị trí hai thẻ trong LinkedList
+            SwapCards(list.Cards, idx, idx + 1);
+            CapNhatThe();
+            lstCards.SelectedIndex = idx + 1;
+        }
 
+        // Sự kiện click nút Đổi màu thẻ
+        private void btnChangeCardColor_Click(object sender, EventArgs e)
+        {
+            if (lstLists.SelectedIndex == -1 || lstCards.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn thẻ cần đổi màu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var list = board.Lists.GetAt(lstLists.SelectedIndex) as CardList;
+            if (list == null) return;
+            var card = list.Cards.GetAt(lstCards.SelectedIndex) as Card;
+            if (card == null) return;
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                // Hiện hộp thoại chọn màu
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Lưu màu vào thuộc tính Color của thẻ
+                    card.Color = colorDialog.Color;
+                    // Cập nhật lại giao diện để hiển thị màu mới
+                    CapNhatThe();
+                }
+            }
+        }
+
+        // Thêm hàm xử lý sự kiện click cho nút xem thẻ đã lưu trữ
+        private void btnShowArchivedCards_Click(object sender, EventArgs e)
+        {
+            if (lstLists.SelectedIndex == -1)
+            {
+                MessageBox.Show("Vui lòng chọn danh sách để xem thẻ đã lưu trữ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            var list = board.Lists.GetAt(lstLists.SelectedIndex) as CardList;
+            if (list == null) return;
+            // Tạo form nhỏ để hiển thị thẻ đã lưu trữ
+            using (var form = new Form())
+            {
+                form.Text = "Thẻ đã lưu trữ";
+                var archivedListBox = new ListBox();
+                archivedListBox.Dock = DockStyle.Top;
+                archivedListBox.Height = 200;
+                // Thêm các thẻ đã lưu trữ vào ListBox
+                for (int i = 0; i < list.Cards.Count(); i++)
+                {
+                    var card = list.Cards.GetAt(i) as Card;
+                    if (card != null && card.IsArchived)
+                    {
+                        archivedListBox.Items.Add(card.Title);
+                    }
+                }
+                var btnRestore = new Button() { Text = "Khôi phục", Dock = DockStyle.Bottom };
+                btnRestore.Height = 40;
+                btnRestore.Click += (s, args) =>
+                {
+                    if (archivedListBox.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("Vui lòng chọn thẻ để khôi phục", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    string cardTitle = archivedListBox.SelectedItem.ToString();
+                    var cardNode = list.Cards.Find(cardTitle);
+                    if (cardNode != null)
+                    {
+                        var card = cardNode.element as Card;
+                        if (card != null)
+                        {
+                            card.IsArchived = false;
+                            archivedListBox.Items.Remove(cardTitle);
+                            CapNhatThe();
+                        }
+                    }
+                };
+                form.Controls.Add(archivedListBox);
+                form.Controls.Add(btnRestore);
+                form.StartPosition = FormStartPosition.CenterParent;
+                form.ClientSize = new Size(300, 250);
+                form.ShowDialog();
+            }
+        }
+        
         // Sự kiện khi chọn danh sách khác trên ListBox lstLists
         private void lstLists_SelectedIndexChanged(object sender, EventArgs e)
         {
             CapNhatThe();
         }
-    }  
 }
