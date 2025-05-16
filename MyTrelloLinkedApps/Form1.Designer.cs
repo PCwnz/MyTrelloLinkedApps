@@ -218,3 +218,4 @@ namespace MyTrelloLinkedApps
         private System.Windows.Forms.Button btnMoveCardDown; // Nút di chuyển thẻ xuống
     }
 }
+
