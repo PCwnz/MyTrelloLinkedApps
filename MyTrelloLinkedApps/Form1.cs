@@ -1,99 +1,97 @@
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using Microsoft.VisualBasic;
+using System; // Thư viện cơ bản của .NET
+using System.Drawing; // Thư viện cho xử lý màu sắc, hình ảnh
+using System.Windows.Forms; // Thư viện cho ứng dụng Windows Forms
+using Microsoft.VisualBasic; // Thư viện hỗ trợ các hàm tương tác (InputBox...)
 
-namespace MyTrelloLinkedApps
+namespace MyTrelloLinkedApps // Khai báo namespace cho dự án
 {
     // Lớp Form1 là form chính của ứng dụng, kế thừa từ Form
-    public partial class Form1 : Form
+    public partial class Form1 : Form // Định nghĩa lớp Form1 kế thừa từ Form
     {
         // Biến board lưu trữ toàn bộ các danh sách (List) trên bảng Trello
-        private Board board = new Board();
+        private Board board = new Board(); // Khởi tạo đối tượng Board
 
         // khai báo Label tiêu đề
-        private Label lblTitle;
+        private Label lblTitle; // Label hiển thị tiêu đề
 
         // Hàm khởi tạo form, đăng ký các sự kiện cho các nút và listbox
-        public Form1()
+        public Form1() // Hàm khởi tạo Form1
         {
-            InitializeComponent();
+            InitializeComponent(); // Khởi tạo các control giao diện (tự động sinh)
 
             // Tiêu đề chính
-            lblTitle = new Label();
-            lblTitle.Text = "QUẢN LÝ BẢN TIN TRELLO";
-            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.Red;
-            lblTitle.AutoSize = true;
-            this.Controls.Add(lblTitle);
+            lblTitle = new Label(); // Tạo label mới
+            lblTitle.Text = "QUẢN LÝ BẢN TIN TRELLO"; // Đặt nội dung
+            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold); // Đặt font chữ
+            lblTitle.ForeColor = Color.Red; // Đặt màu chữ
+            lblTitle.AutoSize = true; // Tự động co giãn theo nội dung
+            this.Controls.Add(lblTitle); // Thêm label vào form
 
             // Gán vị trí sau khi thêm
-            lblTitle.Location = new Point(10, 10); // Đặt trên cùng
+            lblTitle.Location = new Point(10, 10); // Đặt vị trí trên cùng
 
-            lblLists.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblCards.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-
+            lblLists.Font = new Font("Segoe UI", 12F, FontStyle.Bold); // Đặt font cho label danh sách
+            lblCards.Font = new Font("Segoe UI", 12F, FontStyle.Bold); // Đặt font cho label thẻ
 
             //Tạo màu cho các nút
-            btnAddList.BackColor = Color.LightGreen;
-            btnAddList.FlatStyle = FlatStyle.Flat;
+            btnAddList.BackColor = Color.LightGreen; // Đặt màu nền nút thêm danh sách
+            btnAddList.FlatStyle = FlatStyle.Flat; // Đặt kiểu nút phẳng
 
-            btnRemoveList.BackColor = Color.LightCoral;
+            btnRemoveList.BackColor = Color.LightCoral; // Đặt màu nền nút xóa danh sách
             btnRemoveList.FlatStyle = FlatStyle.Flat;
 
-            btnAddCard.BackColor = Color.LightBlue;
+            btnAddCard.BackColor = Color.LightBlue; // Đặt màu nền nút thêm thẻ
             btnAddCard.FlatStyle = FlatStyle.Flat;
 
-            btnRemoveCard.BackColor = Color.LightBlue;
+            btnRemoveCard.BackColor = Color.LightBlue; // Đặt màu nền nút xóa thẻ
             btnRemoveCard.FlatStyle = FlatStyle.Flat;
 
-            btnEditCard.BackColor = Color.LightBlue;
+            btnEditCard.BackColor = Color.LightBlue; // Đặt màu nền nút sửa thẻ
             btnEditCard.FlatStyle = FlatStyle.Flat;
 
-            btnArchiveCard.BackColor = Color.LightBlue;
+            btnArchiveCard.BackColor = Color.LightBlue; // Đặt màu nền nút lưu trữ thẻ
             btnArchiveCard.FlatStyle = FlatStyle.Flat;
 
-            btnMoveCard.BackColor = Color.LightBlue;
+            btnMoveCard.BackColor = Color.LightBlue; // Đặt màu nền nút di chuyển thẻ
             btnMoveCard.FlatStyle = FlatStyle.Flat;
 
-            btnChangeCardColor.BackColor = Color.LightBlue;
+            btnChangeCardColor.BackColor = Color.LightBlue; // Đặt màu nền nút đổi màu thẻ
             btnChangeCardColor.FlatStyle = FlatStyle.Flat;
 
-
-            btnShowArchivedCards.BackColor = Color.LightBlue;
+            btnShowArchivedCards.BackColor = Color.LightBlue; // Đặt màu nền nút xem thẻ đã lưu trữ
             btnShowArchivedCards.FlatStyle = FlatStyle.Flat;
 
-            btnMoveCardUp.BackColor = Color.LightGreen;
+            btnMoveCardUp.BackColor = Color.LightGreen; // Đặt màu nền nút di chuyển thẻ lên
             btnMoveCardUp.FlatStyle = FlatStyle.Flat;
 
-            btnMoveCardDown.BackColor = Color.LightCoral;
+            btnMoveCardDown.BackColor = Color.LightCoral; // Đặt màu nền nút di chuyển thẻ xuống
             btnMoveCardDown.FlatStyle = FlatStyle.Flat;
 
-            this.BackColor = Color.LightGray;
+            this.BackColor = Color.LightGray; // Đặt màu nền form
             
             // Đăng ký các sự kiện click cho các nút
-            btnAddList.Click += btnAddList_Click;
-            btnRemoveList.Click += btnRemoveList_Click;
-            btnAddCard.Click += btnAddCard_Click;
-            btnRemoveCard.Click += btnRemoveCard_Click;
-            btnArchiveCard.Click += btnArchiveCard_Click;
-            btnEditCard.Click += btnEditCard_Click;
-            btnMoveCard.Click += btnMoveCard_Click;
-            lstLists.SelectedIndexChanged += lstLists_SelectedIndexChanged;
+            btnAddList.Click += btnAddList_Click; // Sự kiện thêm danh sách
+            btnRemoveList.Click += btnRemoveList_Click; // Sự kiện xóa danh sách
+            btnAddCard.Click += btnAddCard_Click; // Sự kiện thêm thẻ
+            btnRemoveCard.Click += btnRemoveCard_Click; // Sự kiện xóa thẻ
+            btnArchiveCard.Click += btnArchiveCard_Click; // Sự kiện lưu trữ thẻ
+            btnEditCard.Click += btnEditCard_Click; // Sự kiện sửa thẻ
+            btnMoveCard.Click += btnMoveCard_Click; // Sự kiện di chuyển thẻ
+            lstLists.SelectedIndexChanged += lstLists_SelectedIndexChanged; // Sự kiện chọn danh sách
             // Đăng ký sự kiện cho nút đổi màu thẻ
-            btnChangeCardColor.Click += btnChangeCardColor_Click;
+            btnChangeCardColor.Click += btnChangeCardColor_Click; // Sự kiện đổi màu thẻ
 
             // Đăng ký sự kiện cho nút xem thẻ đã lưu trữ
-            btnShowArchivedCards.Click += btnShowArchivedCards_Click;
+            btnShowArchivedCards.Click += btnShowArchivedCards_Click; // Sự kiện xem thẻ đã lưu trữ
 
             // Đăng ký sự kiện cho nút di chuyển thẻ lên
-            btnMoveCardUp.Click += btnMoveCardUp_Click;
-            btnMoveCardDown.Click += btnMoveCardDown_Click;
+            btnMoveCardUp.Click += btnMoveCardUp_Click; // Sự kiện di chuyển thẻ lên
+            btnMoveCardDown.Click += btnMoveCardDown_Click; // Sự kiện di chuyển thẻ xuống
 
             // Khởi tạo dữ liệu mẫu ban đầu cho ứng dụng
-            KhoiTaoDuLieuMau();
+            KhoiTaoDuLieuMau(); // Tạo dữ liệu mẫu
             // Cập nhật giao diện danh sách
-            CapNhatDanhSach();
+            CapNhatDanhSach(); // Hiển thị danh sách lên giao diện
         }
 
         // Hàm tạo dữ liệu mẫu cho ứng dụng (3 danh sách: Việc cần làm, Đang làm, Đã xong)
@@ -571,7 +569,7 @@ namespace MyTrelloLinkedApps
 
         }
 
-        private void lstCards_SelectedIndexChanged(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
@@ -667,26 +665,10 @@ namespace MyTrelloLinkedApps
                 current = current.next;
             return current?.element;
         }
-
-        // Hàm hoán đổi hai thẻ trong LinkedList theo index
-        private void SwapCards(LinkedList cards, int idx1, int idx2)
-        {
-            if (cards == null) return;
-            var node1 = cards.Head;
-            var node2 = cards.Head;
-            for (int i = 0; i < idx1 && node1 != null; i++) node1 = node1.next;
-            for (int i = 0; i < idx2 && node2 != null; i++) node2 = node2.next;
-            if (node1 != null && node2 != null)
-            {
-                var temp = node1.element;
-                node1.element = node2.element;
-                node2.element = temp;
-            }
-        }
     }
 
-        // Lớp Card: đại diện cho một thẻ trong danh sách
-        public class Card
+    // Lớp Card: đại diện cho một thẻ trong danh sách
+    public class Card
     {
         public string Title { get; set; }        // Tiêu đề thẻ
         public string Description { get; set; }  // Mô tả thẻ
@@ -732,4 +714,6 @@ namespace MyTrelloLinkedApps
         public LinkedList Lists { get; } = new LinkedList(); // Danh sách các list trên board
     }
 }
+
+
 
