@@ -1,46 +1,46 @@
-namespace MyTrelloLinkedApps
+namespace MyTrelloLinkedApps // Khai báo namespace cho dự án
 {
-    partial class Form1
+    partial class Form1 // Định nghĩa partial class Form1 (phần thiết kế giao diện)
     {
         // Biến chứa các thành phần giao diện, dùng để giải phóng tài nguyên khi đóng form
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer components = null; // Container cho các control
 
         // Hàm giải phóng tài nguyên khi form bị đóng
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(bool disposing) // Hàm hủy, giải phóng tài nguyên
         {
-            if (disposing && (components != null))
-                components.Dispose();
-            base.Dispose(disposing);
+            if (disposing && (components != null)) // Nếu cần giải phóng và có component
+                components.Dispose(); // Giải phóng
+            base.Dispose(disposing); // Gọi hàm hủy của lớp cha
         }
 
         // Hàm khởi tạo và cấu hình các control trên form
-        private void InitializeComponent()
+        private void InitializeComponent() // Hàm tự động sinh ra, cấu hình giao diện
         {
-            this.lstLists = new System.Windows.Forms.ListBox();
-            this.lstCards = new System.Windows.Forms.ListBox();
-            this.btnAddList = new System.Windows.Forms.Button();
-            this.btnRemoveList = new System.Windows.Forms.Button();
-            this.btnAddCard = new System.Windows.Forms.Button();
-            this.btnRemoveCard = new System.Windows.Forms.Button();
-            this.btnArchiveCard = new System.Windows.Forms.Button();
-            this.btnEditCard = new System.Windows.Forms.Button();
-            this.btnMoveCard = new System.Windows.Forms.Button();
-            this.lblLists = new System.Windows.Forms.Label();
-            this.lblCards = new System.Windows.Forms.Label();
-            this.btnChangeCardColor = new System.Windows.Forms.Button();
-            this.btnShowArchivedCards = new System.Windows.Forms.Button();
-            this.btnMoveCardUp = new System.Windows.Forms.Button();
-            this.btnMoveCardDown = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            this.lstLists = new System.Windows.Forms.ListBox(); // ListBox hiển thị danh sách
+            this.lstCards = new System.Windows.Forms.ListBox(); // ListBox hiển thị thẻ
+            this.btnAddList = new System.Windows.Forms.Button(); // Nút thêm danh sách
+            this.btnRemoveList = new System.Windows.Forms.Button(); // Nút xóa danh sách
+            this.btnAddCard = new System.Windows.Forms.Button(); // Nút thêm thẻ
+            this.btnRemoveCard = new System.Windows.Forms.Button(); // Nút xóa thẻ
+            this.btnArchiveCard = new System.Windows.Forms.Button(); // Nút lưu trữ thẻ
+            this.btnEditCard = new System.Windows.Forms.Button(); // Nút sửa thẻ
+            this.btnMoveCard = new System.Windows.Forms.Button(); // Nút di chuyển thẻ
+            this.lblLists = new System.Windows.Forms.Label(); // Label tiêu đề danh sách
+            this.lblCards = new System.Windows.Forms.Label(); // Label tiêu đề thẻ
+            this.btnChangeCardColor = new System.Windows.Forms.Button(); // Nút đổi màu thẻ
+            this.btnShowArchivedCards = new System.Windows.Forms.Button(); // Nút xem thẻ đã lưu trữ
+            this.btnMoveCardUp = new System.Windows.Forms.Button(); // Nút di chuyển thẻ lên
+            this.btnMoveCardDown = new System.Windows.Forms.Button(); // Nút di chuyển thẻ xuống
+            this.SuspendLayout(); // Bắt đầu cấu hình giao diện
             // 
             // lstLists
             // 
-            this.lstLists.FormattingEnabled = true;
-            this.lstLists.ItemHeight = 16;
-            this.lstLists.Location = new System.Drawing.Point(14, 92);
-            this.lstLists.Name = "lstLists";
-            this.lstLists.Size = new System.Drawing.Size(265, 260);
-            this.lstLists.TabIndex = 0;
+            this.lstLists.FormattingEnabled = true; // Cho phép hiển thị danh sách
+            this.lstLists.ItemHeight = 16; // Chiều cao mỗi item
+            this.lstLists.Location = new System.Drawing.Point(14, 92); // Vị trí trên form
+            this.lstLists.Name = "lstLists"; // Tên biến
+            this.lstLists.Size = new System.Drawing.Size(265, 260); // Kích thước
+            this.lstLists.TabIndex = 0; // Thứ tự tab
             // 
             // lstCards
             // 
@@ -122,7 +122,7 @@ namespace MyTrelloLinkedApps
             this.lblLists.Size = new System.Drawing.Size(71, 16);
             this.lblLists.TabIndex = 9;
             this.lblLists.Text = "Danh sách";
-            this.lblLists.Click += new System.EventHandler(this.lblLists_Click);
+            this.lblLists.Click += new System.EventHandler(this.lblLists_Click); // Sự kiện click label
             // 
             // lblCards
             // 
@@ -175,10 +175,10 @@ namespace MyTrelloLinkedApps
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(696, 600);
-            this.Controls.Add(this.lblCards);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F); // Tỉ lệ tự động
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font; // Chế độ tự động scale
+            this.ClientSize = new System.Drawing.Size(696, 600); // Kích thước form
+            this.Controls.Add(this.lblCards); // Thêm control vào form
             this.Controls.Add(this.lblLists);
             this.Controls.Add(this.btnMoveCard);
             this.Controls.Add(this.btnEditCard);
@@ -193,10 +193,11 @@ namespace MyTrelloLinkedApps
             this.Controls.Add(this.btnShowArchivedCards);
             this.Controls.Add(this.btnMoveCardUp);
             this.Controls.Add(this.btnMoveCardDown);
-            this.Name = "Form1";
-            this.Text = "Trello LinkedList";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            this.Name = "Form1"; // Tên form
+            this.Text = "Trello LinkedList"; // Tiêu đề form
+            this.Load += new System.EventHandler(this.Form1_Load); // Sự kiện load form
+            this.ResumeLayout(false); // Kết thúc cấu hình giao diện
+            this.PerformLayout(); // Áp dụng layout
 
         }
 
@@ -218,4 +219,6 @@ namespace MyTrelloLinkedApps
         private System.Windows.Forms.Button btnMoveCardDown; // Nút di chuyển thẻ xuống
     }
 }
+
+
 
